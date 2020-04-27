@@ -65,4 +65,52 @@ class RecordsTest extends TestCase
         $json = '[{"type":"A","value":"A-value","ttl":100,"prio":null},{"type":"AAAA","value":"AAAA-value","ttl":100,"prio":null}]';
         $this->assertEquals($json, json_encode($records));
     }
+
+    public function testItCanDetectChanges()
+    {
+        $original = new Records([
+            new Record('A', 'A-value', 100),
+            new Record('AAAA', 'AAAA-value', 100),
+        ]);
+
+        $modified = new Records([
+            new Record('A', 'A-value', 100),
+            new Record('AAAA', 'AAAA-value-change', 100),
+        ]);
+
+        $this->assertEquals(0, $original->delta($modified)->countChanges('A'));
+        $this->assertEquals(1, $original->delta($modified)->countChanges('AAAA'));
+
+        $this->assertEquals(0, $original->delta($modified)->countChanges('MX'));
+    }
+
+    public function testItCanDetectAdditions()
+    {
+        $original = new Records([
+            new Record('A', 'A-value', 100),
+        ]);
+
+        $modified = new Records([
+            new Record('A', 'A-value', 100),
+            new Record('AAAA', 'AAAA-value-added', 100),
+        ]);
+
+        $this->assertEquals(0, $original->delta($modified)->countChanges('A'));
+        $this->assertEquals(1, $original->delta($modified)->countChanges('AAAA'));
+    }
+
+    public function testItCanDetectDeletions()
+    {
+        $original = new Records([
+            new Record('A', 'A-value', 100),
+            new Record('AAAA', 'AAAA-value-to-delete', 100),
+        ]);
+
+        $modified = new Records([
+            new Record('A', 'A-value', 100),
+        ]);
+
+        $this->assertEquals(0, $original->delta($modified)->countChanges('A'));
+        $this->assertEquals(1, $original->delta($modified)->countChanges('AAAA'));
+    }
 }
