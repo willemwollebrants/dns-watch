@@ -92,8 +92,8 @@ class RecordTest extends TestCase
 
     public function testItCanBeJsonSerialized()
     {
-        $record = new Record('A', 'original-value', 100);
-        $json = '{"type":"A","value":"original-value","ttl":100,"prio":null}';
+        $record = new Record('A', 'A-value', 100);
+        $json = '{"type":"A","value":"A-value","ttl":100,"prio":null}';
 
         $this->assertEquals($json, json_encode($record));
     }

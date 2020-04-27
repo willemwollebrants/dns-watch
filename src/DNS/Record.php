@@ -19,6 +19,11 @@ class Record implements JsonSerializable
         $this->prio = $prio;
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
     public static function fromArray(array $input): Record
     {
         $type = $input['type'];
