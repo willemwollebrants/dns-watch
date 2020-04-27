@@ -6,6 +6,10 @@ use JsonSerializable;
 
 class Record implements JsonSerializable
 {
+    public const  TYPES = [
+        'A', 'AAAA', 'MX', 'NS', 'TXT',
+    ];
+
     private $type;
     private $value;
     private $ttl;
