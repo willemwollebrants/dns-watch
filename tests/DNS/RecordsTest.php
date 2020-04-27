@@ -48,7 +48,7 @@ class RecordsTest extends TestCase
             new Record('AAAA', 'value', 100),
         ]);
 
-        $onlyA = $records = new Records([
+        $onlyA = new Records([
             new Record('A', 'value', 100),
         ]);
 
